@@ -1,4 +1,5 @@
 const express = require('express')
+const jwt = require('jsonwebtoken')
 const app = express()
 const port = 3000
 
@@ -65,18 +66,21 @@ function register(newusername,newpassword,newname,newemail){
     
 }
 
-
-app.get('/', (req, res) => {
+app.get('/hello',verifyToken,(req, res) => { 
+    console.log(req.user)
+    
   res.send('Hello World!');
 });
 
- app.post('/',(req,res)=>{
+ app.post('/login',(req,res)=>{
     let data = req.body
-     res.send(
-      login(
-      data.username,data.password
-     ));
- });
+    //  res.send(
+    //   login(
+    //   data.username,data.password
+    let user = login(data.username,data.password);
+
+    res.send(generateToken(user))
+    });
 
  app.post('/register',(req,res)=>{
   let data = req.body
@@ -92,3 +96,28 @@ app.get('/bye', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+//To verify JWT Token
+function verifyToken(req,res,next){
+    let header = req.headers.authorization
+    console.log (header)
+    
+    let token = header.split(' ')[1]
+
+    jwt.verify(token,'secret',function(err,decoded){
+        if(err){
+        res.send("Invalid Token")
+    }
+    
+    console.log(decoded)
+    req.user = decoded
+    next()
+});
+}
+
+//To generate JWT token
+function generateToken(userProfile){
+    return jwt.sign(
+        {userProfile},
+    'secret',{expiresIn:60*60});
+    }

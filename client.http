@@ -1,8 +1,8 @@
-GET http://localhost:3000/
-
+GET http://localhost:3000/hello
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyUHJvZmlsZSI6IlVzZXIgTG9nZ2VkIGluIiwiaWF0IjoxNjgxMTEwNjY1LCJleHAiOjE2ODExMTQyNjV9.Wv-YwNOUvTAv9m6NCjj6wajubo6ADDLme6qC45f_5CE
 ###
 
-POST http://localhost:3000/
+POST http://localhost:3000/login
 Content-Type: application/json
 
 {
@@ -21,3 +21,4 @@ Content-Type: application/json
     "email":"FKEKK@gmail.com"
 
 }
+
